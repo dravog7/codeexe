@@ -3,16 +3,16 @@ from django.db import models
 # Create your models here.
 #questions table
 #submissions table
-class questions(models.Model):
+class question(models.Model):
     testcases=models.BigIntegerField()
 
-class submissions(models.Model):
-    cid=models.BigIntegerField() #0 if not yet assigned
-    done=models.BooleanField()
-    question=models.ForeignKey(questions,on_delete=models.CASCADE)
-    subdate=models.DateTimeField()
+class submission(models.Model):
+    cid=models.BigIntegerField(default=0,blank=True) #0 if not yet assigned
+    done=models.BooleanField(default=False,blank=True)
+    q=models.ForeignKey(question,on_delete=models.CASCADE)
+    subdate=models.DateTimeField(auto_now_add=True,blank=True)
     lang=models.CharField(max_length=200)
     code=models.TextField()
-    customin=models.TextField()
-    errors=models.TextField()
-    testresults=models.TextField() #pairs of output result (WA/AC/TLE/CA) with time taken
+    customin=models.TextField(default=None,blank=True)
+    errors=models.TextField(default=None,blank=True)
+    testresults=models.TextField(default=None,blank=True) #pairs of output result (WA/AC/TLE/CA) with time taken

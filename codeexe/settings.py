@@ -122,3 +122,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CELERY_BROKER_URL='amqp://dravog:lightfighters@localhost/host'
+#CELERY_IMPORTS=('executor.tasks',)

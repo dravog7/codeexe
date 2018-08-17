@@ -10,7 +10,7 @@ def index(request):
     return HttpResponse("HEllo world")
 
 def submit(request,dbid):
-    tasks.execute(dbid)
+    tasks.execute.delay(dbid)
     return HttpResponse("1")
 
 def result(request,dbid):
