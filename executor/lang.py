@@ -1,7 +1,3 @@
-langext={
-    "python3":"py"
-}
-
 langcompile={
     "python3":False,
 }

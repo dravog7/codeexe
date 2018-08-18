@@ -1,4 +1,5 @@
 sudo apt-get install rabbitmq-server
+sudo apt install firejail
 sudo rabbitmqctl add_user user1 hey
 sudo rabbitmqctl add_vhost host
 sudo rabbitmqctl set_permissions -p host user1 ".*" ".*" ".*"

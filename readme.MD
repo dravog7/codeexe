@@ -24,4 +24,13 @@
 ## HOW TO RUN
 
 - run run.sh
+
 - Use ctrl+C to exit
+
+- goto localhost:8000/admin/
+
+- you can add submissions here. there is only 1 question initially. Its output can be found in execution/questions/1.
+- once u add a submission u get its id (its name would be like submission object(id))
+- goto localhost:8000/id/ to run your submission
+- check in admin board for the result
+- (UI not built yet)
