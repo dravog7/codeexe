@@ -126,7 +126,7 @@ class TasksTest(TestCase):
         ws=submission.objects.create(
             q=self.question,
             lang='python3',
-            code='a=open("../questions/1/output0.txt","r")\nres=a.read()\na.close()\nprint(res)',
+            code='a=open("../questions/1/output0.txt","r")\nres=a.read()\na.close()\nprint(res,end="")',
             )
         ws.save()
         self.assertFalse(ws.done)

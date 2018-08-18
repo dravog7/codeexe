@@ -35,6 +35,8 @@ def execute(dbid):
         #get stdout and stderr
         out.append(subp.stdout.read().decode("UTF-8")) #output is byte string so conversion to UTF-8
         data.append(subp.stderr.read().decode("UTF-8"))
+    #print("out: ",out)
+    #print("err: ",data)
     #moving outputs to folder after execution to prevent access to answer
     for i in range(0,workingsub.q.testcases):
         os.system("cat ../questions/{0}/output{1}.txt>output{1}.txt".format(workingsub.q.id,i,workingsub.id))
