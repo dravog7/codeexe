@@ -18,7 +18,7 @@
 
 ## HOW TO TEST
 
-- ./manage.py test
+- ./test.sh
 
 
 ## HOW TO RUN
