@@ -21,13 +21,21 @@ def execute(dbid):
     #set cwd to execution folder
     #setup
     setup(workingsub)
-    #compile
-    compile(workingsub)
     #execute
-    execom=langexe["python3"]
+    execom=langexe[workingsub.lang]
     excom=securitycover(execom,workingsub.id,langt[workingsub.lang])
     #run execom
     os.chdir("{}".format(workingsub.id))
+    #compile
+    err=compile(workingsub)
+    if(err):
+        workingsub.errors=json.dumps([err])
+        workingsub.done=True
+        workingsub.save()
+        os.chdir("..")
+        os.system("rm -rf {}".format(workingsub.id))
+        os.chdir("..")
+        return
     out=[]
     data=[]
     for i in range(workingsub.q.testcases):
@@ -44,9 +52,12 @@ def execute(dbid):
     err=geterr(data) #get error msgs
     data=separate(data)
     #assert output
+    outp=out[0]
     out=assertout(out)
     #combine data and out
     result=combine(data,out,err)
+    if(workingsub.customin):
+        result[0][1]=outp
     workingsub.testresults=json.dumps(result)
     workingsub.errors=json.dumps(err)
     workingsub.done=True
@@ -64,7 +75,11 @@ def setup(wsub):
     tests=wsub.q.testcases
     for i in range(0,tests):
         os.system("cat questions/{0}/input{1}.txt>{2}/input{1}.txt".format(wsub.q.id,i,wsub.id))
-        os.system("cat questions/{0}/output{1}.txt>{2}/output{1}.txt".format(wsub.q.id,i,wsub.id))
+    #if customin
+    if(wsub.customin):
+        file=open("{}/input0.txt".format(wsub.id),'w')
+        file.write(wsub.customin)
+        file.close()
     #write the code to soln.(extension)
     file=open("{}/{}".format(wsub.id,langfile[wsub.lang]),'w')
     file.write(wsub.code)
@@ -75,8 +90,8 @@ def compile(wsub):
         a=langcompile[wsub.lang]()
     #run command
         subp=Popen(a,stdout=PIPE,stderr=PIPE)
-        print(subp.stdout.read())
-        print(subp.stderr.read())
+        err=(subp.stderr.read().decode("UTF-8"))
+        return err
 
 def securitycover(exe,wid,wt):
     #private not working ISSUE (temporarily ignored)
@@ -122,5 +137,5 @@ def assertout(out):
 def combine(data,out,err):
     newarr=[]
     for i in range(len(data)):
-        newarr.append((data[i],out[i]))
+        newarr.append([data[i],out[i]])
     return newarr

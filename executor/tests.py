@@ -89,8 +89,8 @@ class TasksTest(TestCase):
         self.question=question.objects.create(testcases=1)
         ws=submission.objects.create(
             q=self.question,
-            lang='python3',
-            code='print("hello")\nprint("',
+            lang='c',
+            code='#include<stdio.h>\r\nint main(){prin("hello\\nworld\\n");}',
             )
         ws.save()
         self.assertFalse(ws.done)
@@ -100,8 +100,7 @@ class TasksTest(TestCase):
         self.assertTrue(ws.done)
         self.assertGreater(ws.cid,0)
         self.assertNotEqual(ws.errors,None)
-        jso=json.loads(ws.testresults)
-        self.assertFalse(jso[0][1])
+        self.assertIsNone(ws.testresults)
     
     def test_customin(self):
         self.question=question.objects.create(testcases=1)
@@ -119,7 +118,7 @@ class TasksTest(TestCase):
         self.assertTrue(ws.done)
         self.assertGreater(ws.cid,0)
         jso=json.loads(ws.testresults)
-        self.assertEqual(jso[0][1],'12')
+        self.assertEqual(jso[0][1],'12\n')
     
     def test_fileaccess(self):
         self.question=question.objects.create(testcases=1)
